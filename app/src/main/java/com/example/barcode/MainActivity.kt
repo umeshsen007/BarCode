@@ -51,7 +51,12 @@ private fun Barcode(context: Context) {
     scanner.startScan()
         .addOnSuccessListener { barcode ->
             val rawValue: String? = barcode.rawValue
-            Toast.makeText(context, "Scan result: $rawValue", Toast.LENGTH_LONG).show()
+            if (rawValue != null) {
+                Toast.makeText(context, "Scan result: $rawValue", Toast.LENGTH_LONG).show()
+                launchIntent(context, rawValue)
+            } else {
+                Toast.makeText(context, "No QR code detected", Toast.LENGTH_SHORT).show()
+            }
         }
         .addOnCanceledListener {
             Toast.makeText(context, "Scan canceled", Toast.LENGTH_SHORT).show()
@@ -62,4 +67,15 @@ private fun Barcode(context: Context) {
 
             Toast.makeText(context, "Scan failed: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
         }
+}
+
+private fun launchIntent(context: Context, rawValue: String) {
+    val intent = Intent(Intent.ACTION_VIEW).apply {
+        data = Uri.parse(rawValue)
+    }
+    if (intent.resolveActivity(context.packageManager) != null) {
+        context.startActivity(intent)
+    } else {
+        Toast.makeText(context, "No application can handle this QR code", Toast.LENGTH_LONG).show()
+    }
 }
