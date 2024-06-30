@@ -51,12 +51,15 @@ private fun Barcode(context: Context) {
     scanner.startScan()
         .addOnSuccessListener { barcode ->
             val rawValue: String? = barcode.rawValue
-            // Task completed successfully
+            Toast.makeText(context, "Scan result: $rawValue", Toast.LENGTH_LONG).show()
         }
         .addOnCanceledListener {
+            Toast.makeText(context, "Scan canceled", Toast.LENGTH_SHORT).show()
             // Task canceled
         }
         .addOnFailureListener { e ->
             e.printStackTrace()
+
+            Toast.makeText(context, "Scan failed: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
         }
 }
