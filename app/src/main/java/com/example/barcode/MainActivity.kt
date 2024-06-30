@@ -1,7 +1,11 @@
 package com.example.barcode
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -69,6 +73,7 @@ private fun Barcode(context: Context) {
         }
 }
 
+@SuppressLint("QueryPermissionsNeeded")
 private fun launchIntent(context: Context, rawValue: String) {
     val intent = Intent(Intent.ACTION_VIEW).apply {
         data = Uri.parse(rawValue)
